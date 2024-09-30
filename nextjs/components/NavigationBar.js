@@ -4,47 +4,49 @@ import {
   Toolbar,
   Typography,
   Button,
-  Menu,
-  MenuItem,
   Box,
-  ListItemIcon,
 } from "@mui/material";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import Image from "next/image";
 import FunctionsIcon from "@mui/icons-material/Functions";
-import Divider from "@mui/material/Divider";
 import PersonIcon from "@mui/icons-material/Person";
 import useBearStore from "@/store/useBearStore";
-
+// Import the logo image
+import logo from "/public/logo.png"; // Adjust the path based on your project structure
+import logo1 from "/public/logo2.png";
 const NavigationLayout = ({ children }) => {
   const router = useRouter();
   const appName = useBearStore((state) => state.appName);
 
   return (
     <>
-      <AppBar position="sticky" sx={{ backgroundColor: "#ff5e15" }}>
+      <AppBar position="sticky" sx={{ backgroundColor: "#FFD737" }}>
         <Toolbar>
-          <Link href={"/"}>
-            <FunctionsIcon sx={{ color: "#ffffff" }} fontSize="large" />
-          </Link>
+          {/* Display the logo */}
+          <Box sx={{ display: "flex", alignItems: "center", cursor: "pointer" }} onClick={() => router.push("/")}>
+            <Image src={logo} alt="Logo" width={45} height={60} />
+          </Box>
           <Typography
-            variant="body1"
+            variant="body"
             sx={{
               fontSize: "22px",
               fontWeight: 500,
               color: "#ffffff",
               padding: "0 10px",
               fontFamily: "Prompt",
-            }}>
-            {appName}
+            }}
+          >
+          {appName}
           </Typography>
-          <NavigationLink href="/page1" label="Page1" />
+          <NavigationLink href="/page1" label="Home" />
           <div style={{ flexGrow: 1 }} />
           <Button
-            color="#ffffff"
+            sx={{ color: "#ffffff" }}
             onClick={() => {
-              router.push("/page2");
-            }}>
+              router.push("/register");
+            }}
+          >
             <PersonIcon />
           </Button>
         </Toolbar>
@@ -62,12 +64,12 @@ const NavigationLink = ({ href, label }) => {
         sx={{
           fontSize: "14px",
           fontWeight: 500,
-          // textTransform: "uppercase",
           color: "#fff",
           padding: "0 10px", // Add padding on left and right
-        }}>
+        }}
+      >
         {label}
-      </Typography>{" "}
+      </Typography>
     </Link>
   );
 };

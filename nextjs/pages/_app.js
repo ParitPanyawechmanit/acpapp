@@ -1,5 +1,7 @@
+// _app.js
+
 import "@/styles/globals.css";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { AppCacheProvider } from "@mui/material-nextjs/v13-pagesRouter";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
@@ -8,6 +10,7 @@ import Layout from "@/components/layout";
 import useBearStore from "@/store/useBearStore";
 import Head from "next/head";
 import { Backdrop, CircularProgress } from "@mui/material";
+import axios from "axios";
 
 const roboto = Roboto({
   weight: ["300", "400", "500", "700"],
@@ -24,16 +27,27 @@ const theme = createTheme({
 
 export default function App({ Component, pageProps, props }) {
   const router = useRouter();
-  const [loading, setLoading] = React.useState(false);
+  const [loading, setLoading] = useState(false);
   const setAppName = useBearStore((state) => state.setAppName);
+  const [tasks, setTasks] = useState([]);
   const pageName = router.pathname;
 
-  React.useEffect(() => {
+  useEffect(() => {
     console.log("App load", pageName, router.query);
     setLoading(true);
-    // TODO: This section is use to handle page change.
-    setAppName("Say Hi")
-    setLoading(false);
+    // Handle page name or other global states
+    setAppName("Say Hi");
+
+    // Fetch initial data from FastAPI
+    axios.get("http://localhost:8000/api/get_tasks")
+      .then((response) => {
+        setTasks(response.data.tasks);
+        console.log("Fetched tasks:", response.data.tasks);
+      })
+      .catch((error) => {
+        console.error("Failed to fetch tasks:", error);
+      })
+      .finally(() => setLoading(false));
   }, [router, pageName]);
 
   return (
@@ -48,7 +62,7 @@ export default function App({ Component, pageProps, props }) {
       <AppCacheProvider {...props}>
         <ThemeProvider theme={theme}>
           <Layout>
-            <Component {...pageProps} />
+            <Component {...pageProps} tasks={tasks} />
           </Layout>
         </ThemeProvider>
       </AppCacheProvider>
