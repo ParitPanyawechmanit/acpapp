@@ -32,9 +32,9 @@ const NavigationLayout = ({ children }) => {
             sx={{
               fontSize: "22px",
               fontWeight: 500,
-              color: "#ffffff",
+              color: "#000000",
               padding: "0 10px",
-              fontFamily: "Prompt",
+              fontFamily: "Font",
             }}
           >
           {appName}

@@ -36,7 +36,7 @@ export default function App({ Component, pageProps, props }) {
     console.log("App load", pageName, router.query);
     setLoading(true);
     // Handle page name or other global states
-    setAppName("Say Hi");
+    setAppName("DEK RAI");
 
     // Fetch initial data from FastAPI
     axios.get("http://localhost:8000/api/get_tasks")
